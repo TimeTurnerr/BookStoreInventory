@@ -19,11 +19,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import com.example.desmond.bookstoreinventory.data.BookContract.BookEntry;
 public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int BOOK_LOADER = 0;
+    private final String LOG_TAG = CatalogActivity.class.getSimpleName();
     BookCursorAdapter mCursorAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +40,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         ListView bookListView = (ListView) findViewById(R.id.list);
         View emptyView = findViewById(R.id.empty_view);
         bookListView.setEmptyView(emptyView);
-        Button sale = (Button)findViewById(R.id.sale);
-
         mCursorAdapter = new BookCursorAdapter(this, null);
         bookListView.setAdapter(mCursorAdapter);
         bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -58,11 +56,11 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     }
     private void insertPet() {
         ContentValues values = new ContentValues();
-        values.put(BookEntry.COLUMN_BOOK_NAME, "The Lord of the Rings");
-        values.put(BookEntry.COLUMN_BOOK_PRICE, "1250");
-        values.put(BookEntry.COLUMN_BOOK_QUANTITY, 1);
-        values.put(BookEntry.COLUMN_BOOK_SUPPLIER_NAME, "J.R.R. Tolkien");
-        values.put(BookEntry.COLUMN_BOOK_SUPPLIER_PHONE_NUMBER, "9853363536");
+        values.put(BookEntry.COLUMN_BOOK_NAME, getString(R.string.dummy_name));
+        values.put(BookEntry.COLUMN_BOOK_PRICE, getString(R.string.dummy_price));
+        values.put(BookEntry.COLUMN_BOOK_QUANTITY, getString(R.string.dummy_quantity));
+        values.put(BookEntry.COLUMN_BOOK_SUPPLIER_NAME, getString(R.string.dummy_supplier_name));
+        values.put(BookEntry.COLUMN_BOOK_SUPPLIER_PHONE_NUMBER, getString(R.string.dummy_supplier_phone));
         Uri newUri = getContentResolver().insert(BookEntry.CONTENT_URI, values);
     }
     @Override
@@ -108,7 +106,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     }
     private void showDeleteConfirmationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Delete All Pets");
+        builder.setMessage(getString(R.string.action_delete_all_entries));
         builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 deleteAllPets();
@@ -126,6 +124,13 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     }
     private void deleteAllPets() {
         int rowsDeleted = getContentResolver().delete(BookEntry.CONTENT_URI, null, null);
-        Log.v("CatalogActivity", rowsDeleted + " rows deleted from Book database");
+        Log.v(LOG_TAG, rowsDeleted + getString(R.string.rows_deleted));
+    }
+    public void decreaseCount(int columnId, int quantity){
+            quantity = quantity - 1;
+            ContentValues values = new ContentValues();
+            values.put(BookEntry.COLUMN_BOOK_QUANTITY, quantity);
+            Uri updateUri = ContentUris.withAppendedId(BookEntry.CONTENT_URI, columnId);
+            getContentResolver().update(updateUri, values, null, null);
     }
 }

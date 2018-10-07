@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
 import com.example.desmond.bookstoreinventory.data.BookContract.BookEntry;
-
 public class BookProvider extends ContentProvider{
     public static final String LOG_TAG = BookProvider.class.getSimpleName();
     private static final int BOOKS = 100;
@@ -57,7 +56,6 @@ public class BookProvider extends ContentProvider{
         }
     }
     private Uri insertPet(Uri uri, ContentValues values) {
-
         String bookName = values.getAsString(BookEntry.COLUMN_BOOK_NAME);
         if (bookName == null) {
             throw new IllegalArgumentException("Book requires a name");
@@ -102,28 +100,24 @@ public class BookProvider extends ContentProvider{
         }
     }
     private int updatePet(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-
         if (values.containsKey(BookEntry.COLUMN_BOOK_NAME)) {
             String name = values.getAsString(BookEntry.COLUMN_BOOK_NAME);
             if (name == null) {
                 throw new IllegalArgumentException("Pet requires a name");
             }
         }
-
         if (values.containsKey(BookEntry.COLUMN_BOOK_PRICE)) {
             String price = values.getAsString(BookEntry.COLUMN_BOOK_PRICE);
             if (price == null) {
                 throw new IllegalArgumentException("Book requires a Price");
             }
         }
-
         if (values.containsKey(BookEntry.COLUMN_BOOK_SUPPLIER_NAME)) {
             String supplierName = values.getAsString(BookEntry.COLUMN_BOOK_SUPPLIER_NAME);
             if (supplierName == null) {
                 throw new IllegalArgumentException("Book requires Supplier Name");
             }
         }
-
         if (values.containsKey(BookEntry.COLUMN_BOOK_SUPPLIER_PHONE_NUMBER)) {
             String supplierPhonenumber = values.getAsString(BookEntry.COLUMN_BOOK_SUPPLIER_PHONE_NUMBER);
             if (supplierPhonenumber == null) {
@@ -132,8 +126,8 @@ public class BookProvider extends ContentProvider{
         }
         if (values.containsKey(BookEntry.COLUMN_BOOK_QUANTITY)) {
             int quantity = values.getAsInteger(BookEntry.COLUMN_BOOK_QUANTITY);
-            if (quantity == 0) {
-                throw new IllegalArgumentException("You cannot add a book woth 0 quantity");
+            if (quantity < 0) {
+                throw new IllegalArgumentException("Quantity cannot be reduced");
             }
         }
         if (values.size() == 0) {

@@ -18,8 +18,8 @@
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="2"
-            android:paddingLeft="4dp"
-            android:paddingStart="4dp"
+            android:paddingLeft="@dimen/editor"
+            android:paddingStart="@dimen/editor"
             android:orientation="vertical">
             <EditText
                 android:id="@+id/edit_book_name"
@@ -48,7 +48,7 @@
             android:layout_gravity="center">
             <Button
                 android:id="@+id/decrement"
-                android:text="-"
+                android:text="@string/subtract"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp" />
@@ -56,7 +56,7 @@
                 android:id="@+id/quantity_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
+                android:text="@string/zero"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
@@ -65,7 +65,7 @@
                 android:textSize="18sp" />
             <Button
                 android:id="@+id/increment"
-                android:text="+"
+                android:text="@string/add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp" />
@@ -83,7 +83,8 @@
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="2"
-            android:paddingLeft="4dp">
+            android:paddingLeft="4dp"
+            android:paddingStart="4dp">
             <EditText
                 android:id="@+id/edit_supplier_name"
                 android:hint="@string/hint_book_supplier_name"
@@ -103,11 +104,12 @@
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="2"
-            android:paddingLeft="4dp">
+            android:paddingLeft="4dp"
+            android:paddingStart="4dp">
             <EditText
                 android:id="@+id/edit_supplier_phone_number"
                 android:hint="@string/hint_book_supplier_phone_number"
-                android:inputType="number"
+                android:inputType="phone"
                 style="@style/EditorFieldStyle" />
         </RelativeLayout>
     </LinearLayout>
@@ -118,6 +120,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="16dp"
-        android:text="Caontact"
+        android:text="@string/contact"
         android:layout_marginTop="40dp"/>
 </LinearLayout>

@@ -108,9 +108,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String supplierNameString = mSupplierNameEditText.getText().toString().trim();
         String supplierPhoneNumberString = mSupplierPhoneNumberEditText.getText().toString();
         String quantityString = mQuantityTextView.getText().toString();
-        if (mCurrentBookUri==null && TextUtils.isEmpty(bookNameString) && TextUtils.isEmpty(priceString) &&
-                TextUtils.isEmpty(supplierNameString) &&  TextUtils.isEmpty(supplierPhoneNumberString) &&
-                TextUtils.isEmpty(quantityString)){
+        if (mCurrentBookUri == null && (TextUtils.isEmpty(bookNameString) || TextUtils.isEmpty(priceString) ||
+                TextUtils.isEmpty(supplierNameString) ||  TextUtils.isEmpty(supplierPhoneNumberString) ||
+                quantityString.equals("0"))){
+            Toast.makeText(this, getString(R.string.empty_fields), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (mCurrentBookUri != null && (TextUtils.isEmpty(bookNameString) || TextUtils.isEmpty(priceString) ||
+                TextUtils.isEmpty(supplierNameString) ||  TextUtils.isEmpty(supplierPhoneNumberString))){
+            Toast.makeText(this, getString(R.string.empty_fields), Toast.LENGTH_SHORT).show();
             return;
         }
         int price = Integer.parseInt(priceString);
@@ -194,7 +200,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                         finish();
                     }
                 };
-
         showUnsavedChangesDialog(discardButtonClickListener);
     }
     public void dialPhoneNumber(View view) {
@@ -244,7 +249,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             mSupplierNameEditText.setText(supplierName);
             mSupplierPhoneNumberEditText.setText(supplierPhone);
         }
-
     }
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
@@ -274,14 +278,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         builder.setMessage(R.string.delete_dialog_msg);
         builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User clicked the "Delete" button, so delete the pet.
                 deletePet();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User clicked the "Cancel" button, so dismiss the dialog
-                // and continue editing the pet.
                 if (dialog != null) {
                     dialog.dismiss();
                 }
@@ -292,18 +293,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
     private void deletePet() {
         if (mCurrentBookUri != null) {
-            // Call the ContentResolver to delete the pet at the given content URI.
-            // Pass in null for the selection and selection args because the mCurrentPetUri
-            // content URI already identifies the pet that we want.
             int rowsDeleted = getContentResolver().delete(mCurrentBookUri, null, null);
-
-            // Show a toast message depending on whether or not the delete was successful.
             if (rowsDeleted == 0) {
-                // If no rows were deleted, then there was an error with the delete.
                 Toast.makeText(this, getString(R.string.editor_delete_book_failed),
                         Toast.LENGTH_SHORT).show();
             } else {
-                // Otherwise, the delete was successful and we can display a toast.
                 Toast.makeText(this, getString(R.string.editor_delete_book_successful),
                         Toast.LENGTH_SHORT).show();
             }
